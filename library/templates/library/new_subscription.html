@@ -1,0 +1,10 @@
+{% extends 'library/base.html' %} {% block content %}
+<h1>New Subscription</h1>
+<p>Subscribe to get access to our full library for 30 days.</p>
+
+<!-- Payment processing form can go here -->
+<form method="post">
+  {% csrf_token %}
+  <button type="submit">Subscribe for $10</button>
+</form>
+{% endblock %}

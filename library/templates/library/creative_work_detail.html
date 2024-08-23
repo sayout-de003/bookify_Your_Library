@@ -1,0 +1,39 @@
+<!-- library/templates/creative_work_detail.html -->
+
+{% extends 'library/base.html' %} {% block content %}
+<h2>{{ work.title }}</h2>
+<p>Category: {{ work.get_category_display }}</p>
+<p>Description: {{ work.description }}</p>
+{% if work.category == 'painting' %}
+<img src="{{ work.content.url }}" alt="{{ work.title }}" />
+{% elif work.category == 'dancing' %}
+<video controls>
+  <source src="{{ work.content.url }}" type="video/mp4" />
+  Your browser does not support the video tag.
+</video>
+{% else %}
+<a href="{{ work.content.url }}">Download {{ work.get_category_display }}</a>
+{% endif %}
+
+<p>{{ work.likes.count }} Likes</p>
+{% if user_liked %}
+<a href="{% url 'like_creative_work' work.pk %}">Unlike</a>
+{% else %}
+<a href="{% url 'like_creative_work' work.pk %}">Like</a>
+{% endif %}
+
+<h3>Comments</h3>
+<ul>
+  {% for comment in comments %}
+  <li>
+    {{ comment.author }}: {{ comment.content }} ({{ comment.created_at }})
+  </li>
+  {% endfor %}
+</ul>
+
+<h4>Add a comment:</h4>
+<form method="post">
+  {% csrf_token %} {{ comment_form.as_p }}
+  <button type="submit">Add Comment</button>
+</form>
+{% endblock %}

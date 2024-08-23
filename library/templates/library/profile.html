@@ -1,0 +1,62 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Profile</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+    <!-- Assuming you have a CSS file -->
+  </head>
+  <body>
+    <div class="container">
+      <h1>Welcome, {{ user.username }}</h1>
+
+      <!-- Subscription Details -->
+      <section>
+        <h2>Subscription Details</h2>
+        {% if subscription %}
+        <p>Start Date: {{ subscription.start_date }}</p>
+        <p>End Date: {{ subscription.end_date }}</p>
+        <p>Status: {{ subscription.status }}</p>
+        {% else %}
+        <p>You do not have an active subscription.</p>
+        <p><a href="{% url 'new_subscription' %}">Add New Subscription</a></p>
+
+        {% endif %}
+      </section>
+
+      <!-- Last List of Books Issued -->
+      <section>
+    <h2>Last Books Issued</h2>
+    {% if last_books_issued %}
+    <ul>
+        {% for issue in last_books_issued %}
+        <li>
+            <strong>{{ issue.book.title }}</strong> by {{ issue.book.author }} <br />
+            Issued on: {{ issue.issued_on }} | Due on: {{ issue.due_date }}
+        </li>
+        {% endfor %}
+    </ul>
+    {% else %}
+    <p>No books issued recently.</p>
+    {% endif %}
+</section>
+
+
+      <!-- Recent Activity -->
+      <section>
+        <h2>Recent Activity</h2>
+        {% if recent_activity %}
+        <ul>
+          {% for activity in recent_activity %}
+          <li>{{ activity }}</li>
+          {% endfor %}
+        </ul>
+        {% else %}
+        <p>No recent activity.</p>
+        {% endif %}
+      </section>
+    </div>
+  </body>
+</html>

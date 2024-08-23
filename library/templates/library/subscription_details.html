@@ -1,0 +1,15 @@
+{% extends 'library/base.html' %} {% block content %}
+<h1>Subscription Details</h1>
+
+{% if subscription %}
+<p>Your subscription is active.</p>
+<p>Days remaining: {{ days_left }}</p>
+
+<form method="post" action="{% url 'renew_subscription' %}">
+  {% csrf_token %}
+  <button type="submit">Renew Subscription</button>
+</form>
+{% else %}
+<p>You don't have an active subscription.</p>
+<a href="{% url 'new_subscription' %}">Subscribe Now</a>
+{% endif %} {% endblock %}

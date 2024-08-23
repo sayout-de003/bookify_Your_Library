@@ -1,0 +1,9 @@
+{% extends 'library/base.html' %}
+{% block content %}
+<div class="container">
+    <h1>Borrow Successful!</h1>
+    <p>You have successfully borrowed <strong>{{ book.title }}</strong> by {{ book.author }}.</p>
+    <p>Due date: {{ book.bookissue_set.last.due_date }}</p>
+    <a href="{% url 'profile' %}" class="btn btn-primary">Back to Profile</a>
+</div>
+{% endblock %}

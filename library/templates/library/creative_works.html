@@ -1,0 +1,13 @@
+<!-- library/templates/creative_works.html -->
+
+{% extends 'library/base.html' %} {% block content %}
+<h2>Creative Works</h2>
+<a href="{% url 'add_creative_work' %}">Share Your Creative Work</a>
+<ul>
+  {% for work in works %}
+  <li>
+    <a href="{% url 'creative_work_detail' work.pk %}">{{ work.title }}</a> - {{work.category }}
+  </li>
+  {% endfor %}
+</ul>
+{% endblock %}

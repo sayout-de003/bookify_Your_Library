@@ -1,0 +1,9 @@
+<!-- library/templates/add_creative_work.html -->
+
+{% extends 'library/base.html' %} {% block content %}
+<h2>Share Your Creative Work</h2>
+<form method="post" enctype="multipart/form-data">
+  {% csrf_token %} {{ form.as_p }}
+  <button type="submit">Share</button>
+</form>
+{% endblock %}

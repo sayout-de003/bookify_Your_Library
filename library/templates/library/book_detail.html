@@ -1,0 +1,70 @@
+{% extends 'library/base.html' %} {% block content %}
+<div class="container">
+  <h1>{{ book.title }}</h1>
+  <p><strong>Author:</strong> {{ book.author }}</p>
+  <p><strong>Description:</strong> {{ book.description }}</p>
+  <p><strong>Published Date:</strong> {{ book.published_date }}</p>
+  <p><strong>Rating:</strong> {{ book.rating }}/10</p>
+  {% if book.cover_image %}
+  <h3>Book Cover</h3>
+  <img src="{{ book.cover_image.url }}" alt="Book Cover" class="img-fluid" />
+  {% endif %} 
+  {% if book.extra_images %}
+          <div class="book-extra-images">
+            <img src="{{ book.extra_images.url }}" alt="Additional images for {{ book.title }}" />
+          </div>
+          {% endif %}
+
+  <p>
+    <strong>Available:</strong> {% if book.available %} Yes {% else %} No 
+    {%endif %}
+  </p>
+
+  {% if book.epub_file %}
+  <h3>Read Book</h3>
+  <a href="{{ book.epub_file.url }}" class="btn btn-primary">Read ePub</a>
+
+  {% endif %}
+
+  <h3>Reviews</h3>
+  {% if book.reviews.all %}
+  <ul>
+    {% for review in book.reviews.all %}
+    <li>
+      {{ review.user.username }}: {{ review.review_text }}
+      ({{review.rating}}/10)
+    </li>
+    {% endfor %}
+  </ul>
+  {% else %}
+  <p>No reviews yet. Be the first to write one!</p>
+
+  {% endif %}
+
+  <h3>Write a Review</h3>
+  <form method="post" action="{% url 'add_review' book.id %}">
+    {% csrf_token %}
+    <textarea name="review_text" required></textarea>
+    <select name="rating" required>
+      <option value="1">1</option>
+      <option value="2">2</option>
+      <option value="3">3</option>
+      <option value="4">4</option>
+      <option value="5">5</option>
+      <option value="6">6</option>
+      <option value="7">7</option>
+      <option value="8">8</option>
+      <option value="9">9</option>
+      <option value="10">10</option>
+    </select>
+    <button type="submit" class="btn btn-primary">Submit Review</button>
+  </form>
+
+  <h3>Borrow Book</h3>
+<form method="post" action="{% url 'borrow_book' book.id %}">
+  {% csrf_token %}
+  <button type="submit" class="btn btn-primary">Borrow</button>
+</form>
+
+
+{% endblock %}

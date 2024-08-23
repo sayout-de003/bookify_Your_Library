@@ -1,0 +1,73 @@
+{% extends 'library/base.html' %}
+{% load static %}
+{% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Available Books</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <header>
+      <h1>Available Books</h1>
+    </header>
+
+    <main>
+      <!-- Search Form -->
+      <form method="GET" action="{% url 'available_books' %}">
+        <input type="text" name="q" placeholder="Search by title or author" value="{{ request.GET.q }}">
+        <select name="genre">
+          <option value="">All Genres</option>
+          {% for genre in genres %}
+          <option value="{{ genre.id }}" {% if request.GET.genre == genre.id|stringformat:"s" %}selected{% endif %}>
+            {{ genre.name }}
+          </option>
+          {% endfor %}
+        </select>
+        <input type="text" name="year" placeholder="Published Year" value="{{ request.GET.year }}">
+        <button type="submit">Search</button>
+      </form>
+
+      {% if books %}
+      <ul>
+        {% for book in books %}
+        <li>
+          <!-- Display Cover Image -->
+          <div class="book-cover">
+            <img src="{{ book.cover.url }}" alt="Cover of {{ book.title }}" />
+          </div>
+
+          <!-- Display Additional Images -->
+          {% if book.extra_images %}
+          <div class="book-extra-images">
+            <img src="{{ book.extra_images.url }}" alt="Additional images for {{ book.title }}" />
+          </div>
+          {% endif %}
+
+          <!-- Display Book Details with Link to Book Details Page -->
+          <h2>
+            <a href="{% url 'book_detail' book.pk %}">{{ book.title }}</a>
+          </h2>
+          <p>Author: {{ book.author }}</p>
+          <p>Description: {{ book.description }}</p>
+          <p>Published Date: {{ book.published_date }}</p>
+          <p>Available: {% if book.available %} Yes {% else %} No {% endif %}</p>
+
+          <!-- Display Rating -->
+          {% if book.rating %}
+          <p>Rating: {{ book.rating }}/10</p>
+          {% else %}
+          <p>Rating: Not rated</p>
+          {% endif %}
+        </li>
+        {% endfor %}
+      </ul>
+      {% else %}
+      <p>No books available.</p>
+      {% endif %}
+    </main>
+  </body>
+</html>
+{% endblock %}

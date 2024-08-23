@@ -1,0 +1,50 @@
+{% extends 'library/base.html' %} {% load static %} {% block content %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Subscription</title>
+    <link rel="stylesheet" href="{% static 'css/styles.css' %}" />
+  </head>
+  <body>
+    <div class="container">
+      <h1>Your Subscription</h1>
+
+      {% if user.is_authenticated %} {% if subscription %}
+      <p>You are subscribed to the {{ subscription.plan }} plan.</p>
+      <p>Days remaining: {{ days_remaining }}</p>
+
+      <form method="post" action="{% url 'process_subscription' %}">
+        {% csrf_token %}
+        <label for="subscription_plan">Renew Subscription Plan:</label>
+        <select name="subscription_plan" id="subscription_plan" required>
+          <option value="monthly">Monthly - $9.99</option>
+          <option value="yearly">Yearly - $99.99</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">
+          Renew Subscription
+        </button>
+      </form>
+      {% else %}
+      <p>You do not have an active subscription.</p>
+      <form method="post" action="{% url 'process_subscription' %}">
+        {% csrf_token %}
+        <label for="subscription_plan">Choose a Subscription Plan:</label>
+        <select name="subscription_plan" id="subscription_plan" required>
+          <option value="monthly">Monthly - $9.99</option>
+          <option value="yearly">Yearly - $99.99</option>
+        </select>
+
+        <button type="submit" class="btn btn-primary">Buy Subscription</button>
+      </form>
+      {% endif %} {% else %}
+      <p>
+        Please <a href="{% url 'login' %}">log in</a> to view your subscription.
+      </p>
+      {% endif %}
+    </div>
+  </body>
+</html>
+{% endblock %}
