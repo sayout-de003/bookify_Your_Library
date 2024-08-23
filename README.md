@@ -88,9 +88,7 @@ We welcome contributions to **bookify_Your_Library**! To contribute:
 
 5. **Open a Pull Request** on GitHub to merge your changes into the main repository.
 
-## License
 
-This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
 
 ## Contact
 
